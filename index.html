@@ -47,13 +47,14 @@
             code += "// QR code rendering method\r\n";
             code += "module qr_render(data, module_size = 1, height = 1) {\r\n";
             code += "    maxmod = len(data) - 1;\r\n";
-            code += "    union() {\r\n";
+            code += "    // Slight growth fuses corner-touching modules into a valid manifold\r\n";
+            code += "    linear_extrude(height) offset(delta = module_size * 0.001) {\r\n";
             code += "        for(r = [0 : maxmod]) {\r\n";
             code += "            for(c = [0 : maxmod]) {\r\n";
             code += "                if(data[r][c] == 1){\r\n";
             code += "                    xo = c * module_size;\r\n";
             code += "                    yo = (maxmod - r) * module_size;\r\n";
-            code += "                    translate([xo, yo, 0]) cube([module_size, module_size, height]);\r\n";
+            code += "                    translate([xo, yo]) square(module_size);\r\n";
             code += "                }\r\n";
             code += "            }\r\n";
             code += "        }\r\n";
